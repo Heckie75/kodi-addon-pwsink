@@ -1,0 +1,217 @@
+# Kodi Media Center language file
+# Addon Name: Skin Widgets
+# Addon id: service.skin.widgets
+# Addon Provider: Martijn, phil65
+msgid ""
+msgstr ""
+"Project-Id-Version: Kodi Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@kodi.org\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kodi Translation Team\n"
+"Language-Team: English (http://www.transifex.com/projects/p/xbmc-addons/language/en/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#32001"
+msgid "Audio sink setter"
+msgstr "Audio sink setter"
+
+msgctxt "#32002"
+msgid "Select audio sink"
+msgstr "Audioausgabe wählen"
+
+msgctxt "#32003"
+msgid "Audio sink set"
+msgstr "Audioausgabe gesetzt"
+
+msgctxt "#32004"
+msgid "New audio sink is %s"
+msgstr "Neue Audioausgabe ist %s"
+
+msgctxt "#32005"
+msgid "Setup"
+msgstr "Einrichtung"
+
+msgctxt "#32006"
+msgid "Discover devices"
+msgstr "Suche Geräte"
+
+msgctxt "#32007"
+msgid "No devices here. Run discover first!"
+msgstr "Keine Geräte. Begebe Dich auf die Suche!"
+
+msgctxt "#32008"
+msgid "Start discovery"
+msgstr "Starte Suche"
+
+msgctxt "#32009"
+msgid "Sink"
+msgstr "Senke"
+
+msgctxt "#32010"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "#32011"
+msgid "Alias"
+msgstr "Alias"
+
+msgctxt "#32012"
+msgid "Hide sink"
+msgstr "Verstecke Gerät"
+
+msgctxt "#32013"
+msgid "Bluetooth outputs"
+msgstr "Bluetooth Geräte"
+
+msgctxt "#32014"
+msgid "Add to favourites"
+msgstr "Zu Favoriten hinzufügen"
+
+msgctxt "#32015"
+msgid "Audio sink failed"
+msgstr "Setzen der Audioausgabe fehlgeschlagen"
+
+msgctxt "#32016"
+msgid "Failed to set audio sink %s"
+msgstr "Setzen der Audioausgabe %s fehlgeschlagen"
+
+msgctxt "#32017"
+msgid "connected"
+msgstr "verbunden"
+
+msgctxt "#32018"
+msgid "disconnect"
+msgstr "trenne Verbindung"
+
+msgctxt "#32019"
+msgid "%s disconnected"
+msgstr "Verbindung zu %s getrennt"
+
+msgctxt "#32020"
+msgid "Added to favourites"
+msgstr "Zu Favoriten hinzufügt"
+
+msgctxt "#32021"
+msgid "Sink 1"
+msgstr "Senke 1"
+
+msgctxt "#32022"
+msgid "Sink 2"
+msgstr "Senke 2"
+
+msgctxt "#32023"
+msgid "Sink 3"
+msgstr "Senke 3"
+
+msgctxt "#32024"
+msgid "Sink 4"
+msgstr "Senke 4"
+
+msgctxt "#32025"
+msgid "Sink 5"
+msgstr "Senke 5"
+
+msgctxt "#32026"
+msgid "Sink 6"
+msgstr "Senke 6"
+
+msgctxt "#32027"
+msgid "Sink 7"
+msgstr "Senke 7"
+
+msgctxt "#32028"
+msgid "Sink 8"
+msgstr "Senke 8"
+
+msgctxt "#32029"
+msgid "Sink 9"
+msgstr "Senke 9"
+
+msgctxt "#32030"
+msgid "Sink 10"
+msgstr "Senke 10"
+
+msgctxt "#32041"
+msgid "Icon"
+msgstr "Symbol"
+
+msgctxt "#32042"
+msgid "Plug"
+msgstr "Stecker"
+
+msgctxt "#32043"
+msgid "HDMI"
+msgstr "HDMI"
+
+msgctxt "#32044"
+msgid "Displayport"
+msgstr "Displayport"
+
+msgctxt "#32045"
+msgid "USB"
+msgstr "USB"
+
+msgctxt "#32046"
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgctxt "#32047"
+msgid "Stereo"
+msgstr "Stereoanlage"
+
+msgctxt "#32048"
+msgid "Speaker"
+msgstr "Lautsprecher"
+
+msgctxt "#32049"
+msgid "Headphone"
+msgstr "Kopfhörer"
+
+msgctxt "#32050"
+msgid "Livingroom"
+msgstr "Wohnzimmer"
+
+msgctxt "#32051"
+msgid "Bedroom"
+msgstr "Schlafzimmer"
+
+msgctxt "#32052"
+msgid "Kitchen"
+msgstr "Küche"
+
+msgctxt "#32053"
+msgid "Bathroom"
+msgstr "Badezimmer"
+
+msgctxt "#32054"
+msgid "Hall"
+msgstr "Flur"
+
+msgctxt "#32055"
+msgid "Combine"
+msgstr "Kombination"
+
+msgctxt "#32056"
+msgid "Default"
+msgstr "Standard"
+
+msgctxt "#32057"
+msgid "active"
+msgstr "aktiv"
+
+msgctxt "#32060"
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgctxt "#32061"
+msgid "Number of re-attempts"
+msgstr "Anzahl Wiederholversuche"
+
+msgctxt "#32063"
+msgid "Force reconnect existing Bluetooth connections"
+msgstr "Bestehende Bluetoothverbindungen neu verbinden"
