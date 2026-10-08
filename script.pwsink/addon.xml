@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.pwsink" name="Pipewire Sink Setter" version="1.0.0" provider-name="Heckie">
+<addon id="script.pwsink" name="Pipewire Sink Setter" version="1.0.1" provider-name="Heckie">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0" />
 	</requires>
@@ -13,8 +13,8 @@
 		</menu>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en_GB">Pipewire Sink Setter with Bluethooth support</summary>
-		<description lang="en_GB">Pipewire Sink Setter with Bluethooth support</description>
+		<summary lang="en_GB">Pipewire Sink Setter with Bluetooth support</summary>
+		<description lang="en_GB">Switch the active PipeWire audio sink, including paired Bluetooth devices.</description>
 		<disclaimer lang="en_GB"></disclaimer>
 		<language>en_GB</language>
 		<platform>linux</platform>
@@ -22,6 +22,8 @@
 		<website>https://github.com/Heckie75/kodi-addon-pwsink</website>
 		<source>https://github.com/Heckie75/kodi-addon-pwsink</source>
 		<news>
+		v1.0.1 (2026-10-06)
+		- autoresume on sink change if Kodi was playing before and has paused
 		v1.0.0 (2025-04-20)
 		- Initial version
 		</news>

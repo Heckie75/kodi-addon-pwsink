@@ -7,6 +7,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcvfs
+from resources.lib import kodi
 from resources.lib import pwsink
 
 addon = xbmcaddon.Addon()
@@ -136,9 +137,13 @@ def get_icon(id: int, active: bool = False, connected: bool = False) -> str:
 
 def set_sink(setting: Setting) -> None:
 
+    player = kodi.get_active_player()
     sink = pwsink.Sink.set_sink(
         setting.address, retry=addon.getSettingInt("retries"), reconnect=addon.getSettingBool("reconnect"))
     if sink:
+        if player and player[1] > 0 and kodi.wait_for_player_pause(player[0]):
+            kodi.play_player(player[0])
+
         xbmcgui.Dialog().notification(heading=addon.getLocalizedString(32003),
                                       message=addon.getLocalizedString(32004) % (setting.alias or setting.name), icon=get_icon(setting.icon, active=True))
 

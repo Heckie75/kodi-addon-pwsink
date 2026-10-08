@@ -15,6 +15,9 @@ downloads/
 eggs/
 .eggs/
 lib/
+!script.pwsink/resources/lib/
+script.pwsink/resources/lib/*
+!script.pwsink/resources/lib/kodi.py
 lib64/
 parts/
 sdist/
