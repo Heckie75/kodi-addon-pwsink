@@ -8,7 +8,11 @@ import xbmcaddon
 import xbmcgui
 import xbmcvfs
 from resources.lib import kodi
-from resources.lib import pwsink
+
+if sys.platform == "win32":
+    from resources.lib import winsink as audio
+else:
+    from resources.lib import pwsink as audio
 
 addon = xbmcaddon.Addon()
 addon_dir = xbmcvfs.translatePath(addon.getAddonInfo('path'))
@@ -17,7 +21,27 @@ _ICON_DEFAULT = 14
 _ICON_DISCONNECT = 15
 
 
-class XbmcLogger(pwsink.MyLogger):
+class XbmcLogger():
+
+    DEBUG = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+
+    def __init__(self, level):
+        self.level = level
+
+    def debug(self, message):
+        self.log(self.DEBUG, message)
+
+    def info(self, message):
+        self.log(self.INFO, message)
+
+    def warning(self, message):
+        self.log(self.WARN, message)
+
+    def error(self, message):
+        self.log(self.ERROR, message)
 
     def log(self, level, s):
 
@@ -39,7 +63,9 @@ class Setting():
 
     def is_bluetooth(self) -> bool:
 
-        return re.match(r"^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$", self.address)
+        return bool(re.fullmatch(r"(?:[0-9A-F]{2}:){5}[0-9A-F]{2}", self.address, re.IGNORECASE)
+                    or (sys.platform == "win32" and re.fullmatch(
+                        r"[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}", self.address, re.IGNORECASE)))
 
     @staticmethod
     def get_settings() -> 'list[Setting]':
@@ -95,15 +121,16 @@ class Setting():
             else:
                 return 0
 
-        sinks = [sink for sink in pwsink.Sink.get_pipewire_sinks()
+        bluetooth = audio.BluetoothDevice.get_bluetooth_devices()
+        sinks = [sink for sink in audio.Sink.get_pipewire_sinks()
                  if not sink.address]
-        sinks.extend(pwsink.BluetoothDevice.get_bluetooth_devices())
+        sinks.extend(bluetooth)
         sinks.sort(key=lambda s: s.name)
 
         former_settings = Setting.get_settings()
         Setting.reset()
 
-        for i, sink in enumerate(sinks):
+        for i, sink in enumerate(sinks[:Setting._MAX_SINKS]):
 
             addon.setSettingString(f"name_{i}", sink.name)
             addon.setSettingString(f"address_{i}", str(sink.id))
@@ -117,7 +144,7 @@ class Setting():
 
             else:
                 addon.setSettingInt(f"icon_{i}", get_device_icon(
-                    sink.name, is_bluetooth=type(sink) == pwsink.BluetoothDevice))
+                    sink.name, is_bluetooth=isinstance(sink, audio.BluetoothDevice)))
 
 
 def get_icon(id: int, active: bool = False, connected: bool = False) -> str:
@@ -138,7 +165,7 @@ def get_icon(id: int, active: bool = False, connected: bool = False) -> str:
 def set_sink(setting: Setting) -> None:
 
     player = kodi.get_active_player()
-    sink = pwsink.Sink.set_sink(
+    sink = audio.Sink.set_sink(
         setting.address, retry=addon.getSettingInt("retries"), reconnect=addon.getSettingBool("reconnect"))
     if sink:
         if player and player[1] > 0 and kodi.wait_for_player_pause(player[0]):
@@ -159,9 +186,9 @@ def select():
         preselect = -1
         disconnect = None
         listitems = list()
-        default_sink = pwsink.Sink.get_default_pipewire_sink()
+        default_sink = audio.Sink.get_default_pipewire_sink()
         connected_bt_devices = [
-            d.address for d in pwsink.BluetoothDevice.get_bluetooth_devices() if d.connected]
+            d.address for d in audio.BluetoothDevice.get_bluetooth_devices() if d.connected]
 
         settings = [s for s in Setting.get_settings() if not s.hidden]
         for i, setting in enumerate(settings):
@@ -170,7 +197,10 @@ def select():
             label = setting.alias or setting.name
 
             label2 = list()
-            is_active = setting.name == default_sink.name
+            is_active = bool(default_sink and (setting.address == str(default_sink.id) or (
+                sys.platform != "win32" and setting.name == default_sink.name) or (
+                sys.platform == "win32" and setting.is_bluetooth()
+                and setting.address == default_sink.address)))
             if is_active:
                 listitem.setProperty("preselect", "true")
                 preselect = i
@@ -179,7 +209,8 @@ def select():
             is_connected = False
             if setting.is_bluetooth() and setting.address in connected_bt_devices:
                 is_connected = True
-                disconnect = label
+                if sys.platform != "win32":
+                    disconnect = label
                 label2.append(addon.getLocalizedString(32017))
 
             listitem.setLabel(label)
@@ -208,7 +239,7 @@ def select():
         addon.getLocalizedString(32002), listitems, preselect=preselect, useDetails=True)
 
     if disconnect and selected == len(listitems) - 1:
-        pwsink.BluetoothDevice.disconnect()
+        audio.BluetoothDevice.disconnect()
         xbmcgui.Dialog().notification(heading=addon.getLocalizedString(32001),
                                       message=addon.getLocalizedString(
                                           32019) % disconnect,
@@ -244,20 +275,29 @@ def add_to_favourites(id: int) -> None:
 
 if __name__ == "__main__":
 
-    pwsink.LOGGER = XbmcLogger(xbmc.LOGDEBUG)
+    audio.LOGGER = XbmcLogger(xbmc.LOGDEBUG)
 
-    args = sys.argv
-    if len(args) == 2 and args[1] == "discover":
-        Setting.refresh()
+    try:
+        args = sys.argv
+        if len(args) == 2 and args[1] == "discover":
+            xbmcgui.Dialog().notification(heading=addon.getLocalizedString(32001),
+                                          message=addon.getLocalizedString(32006),
+                                          icon=get_icon(_ICON_DEFAULT))
+            Setting.refresh()
+            addon.openSettings()
 
-    elif len(args) == 3 and args[1] == "add_fav":
-        add_to_favourites(id=int(args[2]))
+        elif len(args) == 3 and args[1] == "add_fav":
+            add_to_favourites(id=int(args[2]))
 
-    elif len(args) == 4 and args[2].startswith("?id"):
-        m = re.match(r"^\?id=([0-9]+)$", args[2])
-        if m:
-            setting = Setting.get_setting(int(m.groups()[0]))
-            set_sink(setting)
+        elif len(args) == 4 and args[2].startswith("?id"):
+            m = re.match(r"^\?id=([0-9]+)$", args[2])
+            if m:
+                setting = Setting.get_setting(int(m.groups()[0]))
+                if setting:
+                    set_sink(setting)
 
-    else:
-        select()
+        else:
+            select()
+    except RuntimeError as error:
+        xbmc.log(str(error), xbmc.LOGERROR)
+        xbmcgui.Dialog().ok(addon.getLocalizedString(32015), str(error))

@@ -18,6 +18,10 @@ lib/
 !script.pwsink/resources/lib/
 script.pwsink/resources/lib/*
 !script.pwsink/resources/lib/kodi.py
+!script.pwsink/resources/lib/
+script.pwsink/resources/lib/*
+!script.pwsink/resources/lib/kodi.py
+!script.pwsink/resources/lib/winsink.py
 lib64/
 parts/
 sdist/
